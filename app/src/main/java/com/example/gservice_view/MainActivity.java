@@ -13,8 +13,8 @@ import android.webkit.WebViewClient;
 
 public class MainActivity extends AppCompatActivity {
 
-     private final String Url = "https://google.com";
-     private WebViewClient webViewClient = new WebViewClient() {
+     private final String Url = "http://95.31.244.137:10002/GLS37";
+     private final WebViewClient webViewClient = new WebViewClient() {
 
          @SuppressWarnings("deprecation")
          @Override
