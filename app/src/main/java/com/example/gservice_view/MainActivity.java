@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         webView.loadUrl(this.Url);
         webView.setWebViewClient(this.webViewClient);
         webView.getSettings().setJavaScriptEnabled(true);
+        getSupportActionBar().hide();
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
