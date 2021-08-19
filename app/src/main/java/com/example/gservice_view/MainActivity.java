@@ -7,6 +7,8 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -28,6 +30,25 @@ public class MainActivity extends AppCompatActivity {
          public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
              view.loadUrl(request.getUrl().toString());
              return true;
+         }
+
+         @Override
+         public void onPageFinished(WebView view, String url)
+         {
+             view.getSettings().setJavaScriptEnabled(true);
+             view.setWebChromeClient(new WebChromeClient());
+             try {
+                 view.loadUrl("javascript:(document.onload = function() { "
+                            + "let captionBar = document.getElementById('captionbar');"
+                            + "captionBar.parentNode.removeChild(captionBar);"
+                            + "let themesCell = document.getElementById('themesCell');"
+                            + "themesCell.parentNode.removeChild(themesCell);"
+                            + "let openedCell = document.getElementById('openedCell');"
+                            + "openedCell.parentNode.removeChild(openedCell);"
+                         +"})()");
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
          }
      };
 
@@ -53,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         this.getOnBackPressedDispatcher().addCallback(this, callback);
 
         this.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 }
