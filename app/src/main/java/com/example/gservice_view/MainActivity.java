@@ -13,6 +13,9 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class MainActivity extends AppCompatActivity {
 
      private final String Url = "http://95.31.244.137:10002/GLS37";
@@ -38,17 +41,21 @@ public class MainActivity extends AppCompatActivity {
              view.getSettings().setJavaScriptEnabled(true);
              view.setWebChromeClient(new WebChromeClient());
              try {
-                 view.loadUrl("javascript:(document.onload = function() { "
-                            + "let captionBar = document.getElementById('captionbar');"
-                            + "captionBar.parentNode.removeChild(captionBar);"
-                            + "let themesCell = document.getElementById('themesCell');"
-                            + "themesCell.parentNode.removeChild(themesCell);"
-                            + "let openedCell = document.getElementById('openedCell');"
-                            + "openedCell.parentNode.removeChild(openedCell);"
+                 view.loadUrl("javascript:(function() { "
+                            + this.readFile("script.js")
                          +"})()");
              } catch (Exception e) {
                  e.printStackTrace();
              }
+         }
+
+         private String readFile(String fileName) throws IOException {
+             InputStream stream = getAssets().open(fileName);
+             int size = stream.available();
+             byte[] buffer = new byte[size];
+             stream.read(buffer);
+             stream.close();
+             return new String(buffer);
          }
      };
 
